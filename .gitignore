@@ -13,9 +13,6 @@ __pycache__
 venv/
 .env
 
-# macOS
-.DS_Store
-
 # Testing/Development artifacts
 .idea/
 *.log

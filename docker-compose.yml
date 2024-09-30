@@ -1,0 +1,16 @@
+services:
+ db:
+   image: postgres:latest
+   container_name: my_postgres
+   environment:
+     POSTGRES_USER: sasha
+     POSTGRES_PASSWORD: sasha123
+     POSTGRES_DB: booking_db
+   volumes:
+     - postgres_data:/var/lib/postgresql/data
+   ports:
+     - "5432:5432"
+
+volumes:
+ postgres_data:
+
