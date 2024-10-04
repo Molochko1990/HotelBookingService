@@ -3,20 +3,22 @@ from sqlalchemy.orm import Session
 from app.schemas import booking as schemas
 from app.models.booking import Booking
 from app.db import get_db
+from app.crud import booking as crud_booking
 
 router = APIRouter()
 
-@router.post("/", response_model=schemas.Booking)
+@router.post("/create", response_model=schemas.Booking)
 def create_booking(booking: schemas.BookingCreate, db: Session = Depends(get_db)):
-    db_booking = Booking(room_id=booking.room_id, date_start=booking.date_start, date_end=booking.date_end)
-    db.add(db_booking)
-    db.commit()
-    db.refresh(db_booking)
+    return crud_booking.create_room(db=db, booking=booking)
+
+@router.delete("/{booking_id}", response_model=schemas.Booking)
+def delete_booking(booking_id: int, db: Session = Depends(get_db)):
+    db_booking = crud_booking.delete_room(db=db, booking_id=booking_id)
+    if db_booking is None:
+        raise HTTPException(status_code=404, detail="Booking not found")
     return db_booking
 
 @router.get("/", response_model=list[schemas.Booking])
 def read_bookings(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    bookings = db.query(Booking).offset(skip).limit(limit).all()
-    return bookings
+    return crud_booking.get_room(db=db, skip=skip, limit=limit)
 
-# Дополнительные маршруты для удаления, обновления и других операций.

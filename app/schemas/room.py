@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 class HotelRoomBase(BaseModel):
@@ -10,6 +12,7 @@ class HotelRoomCreate(HotelRoomBase):
 
 class HotelRoom(HotelRoomBase):
     id: int
+    created_at: datetime
 
     class Config:
         orm_mode = True
