@@ -9,7 +9,7 @@ from app.models.booking import Booking
 
 
 app = FastAPI()
-Base.metadata.create_all(bind=engine)
+
 
 @app.get("/")
 def read_root():
@@ -25,3 +25,10 @@ def healthcheck(db: Session = Depends(get_db)):
         return {"status": "ok"}
     except Exception as e:
         return {"status": "error", "details": str(e)}
+
+def create_tables():
+    Base.metadata.create_all(bind=engine)
+
+
+if __name__ == "__main__":
+    create_tables()

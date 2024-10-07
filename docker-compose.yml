@@ -11,7 +11,7 @@ services:
 
   test-app:
     build: .
-    command: ["poetry", "run", "pytest", "tests"]
+    command: ["./wait-for-it.sh", "test_db:5432", "--", "poetry", "run", "pytest", "tests"]
     depends_on:
       - test_db
     env_file:
@@ -35,7 +35,7 @@ services:
       POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD}
       POSTGRES_DB: ${TEST_POSTGRES_DB}
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - test_postgres_data:/var/lib/postgresql/data
 
